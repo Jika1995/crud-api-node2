@@ -5,25 +5,27 @@ import { getUserById } from './controllers/getUserById.js';
 import { createUser } from './controllers/createUser.js';
 import { updateUser } from './controllers/updateUser.js';
 import { deleteUser } from './controllers/deleteUser.js'
+import dotenv from 'dotenv';
+dotenv.config();
 
-const server = createServer(async (req: any, res: any) => {
+export const server = createServer(async (req: any, res: any) => {
     if (req.url === '/api/users' && req.method === 'GET') {
-        getUsers(req, res)
-    } else if (req.url.match(/\/api\/users\/[a-f0-9-]{36}$/) && req.method === 'GET') {
+        await getUsers(req, res)
+    } else if (req.url.match(/\/api\/users\/[a-f0-9-]/) && req.method === 'GET') {
 
         const id = req.url.split('/')[3]
-        getUserById(req, res, id)
+        await getUserById(req, res, id)
 
     } else if (req.url === '/api/users' && req.method === 'POST') {
 
-        createUser(req, res)
+        await createUser(req, res)
 
-    } else if (req.url.match(/\/api\/users\/[a-f0-9-]{36}$/) && req.method === 'PUT') {
+    } else if (req.url.match(/\/api\/users\/[a-f0-9-]/) && req.method === 'PUT') {
 
         const id = req.url.split('/')[3];
-        updateUser(req, res, id)
+        await updateUser(req, res, id)
 
-    } else if (req.url.match(/\/api\/users\/[a-f0-9-]{36}$/) && req.method === 'DELETE') {
+    } else if (req.url.match(/\/api\/users\/[a-f0-9-]/) && req.method === 'DELETE') {
 
         const id = req.url.split('/')[3];
         await deleteUser(req, res, id)
@@ -41,5 +43,5 @@ const PORT = process.env.PORT || 9000
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
-
 })
+
